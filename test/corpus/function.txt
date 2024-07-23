@@ -34,11 +34,11 @@ j :: fn(
           (identifier)
           (int_literal))
         (return_expression
-          (unit_expression))
+          (primitive))
         (return_expression)
         (return_expression
           (return_expression
-            (unit_expression)))
+            (primitive)))
         (return_expression
           (binary_expression
             left: (int_literal)

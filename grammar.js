@@ -112,8 +112,8 @@ module.exports = grammar({
     _statement: ($) => choice($.decl, $._expr),
     _expr: ($) =>
       choice(
-        "root",
         $.parenthesized_expression,
+        $.root,
         $.ignore,
         $.bool_literal,
         $.identifier,
@@ -138,9 +138,11 @@ module.exports = grammar({
       ),
     parenthesized_expression: ($) =>
       seq("(", repeat($._newline), $._expr, repeat($._newline), ")"),
+    root: (_) => "root",
     ignore: (_) => "_",
     bool_literal: (_) => choice("true", "false"),
-    block: ($) => seq("{", delimited($, ",", $._statement), "}"),
+    block: ($) =>
+      seq("{", delimited($, ",", choice($._statement, $._item)), "}"),
     struct_item: ($) =>
       seq(
         "struct",
@@ -188,43 +190,33 @@ module.exports = grammar({
     decl: ($) =>
       choice(
         $._decl_untyped,
-        seq(
-          $.identifier,
-          ":",
-          $._type,
-          repeat($._newline),
-          "=",
-          repeat($._newline),
-          $._expr,
-        ),
+        seq($.identifier, ":", $._type, "=", repeat($._newline), $._expr),
       ),
     _decl_untyped: ($) => seq($.identifier, ":=", repeat($._newline), $._expr),
     return_expression: ($) => prec.right(5, seq("ret", optional($._expr))),
     call_expression: ($) =>
-      prec(
-        300,
-        seq(
-          $._expr,
-          "(",
-          optional(
-            seq(
-              repeat($._newline),
-              $._expr,
-              repeat(
-                seq(
-                  choice(
-                    seq(repeat($._newline), ",", repeat($._newline)),
-                    repeat1($._newline),
-                  ),
-                  $._expr,
+      prec(300, seq(field("called", $._expr), $.arguments)),
+    arguments: ($) =>
+      seq(
+        "(",
+        optional(
+          seq(
+            repeat($._newline),
+            $._expr,
+            repeat(
+              seq(
+                choice(
+                  seq(repeat($._newline), ",", repeat($._newline)),
+                  repeat1($._newline),
                 ),
+                $._expr,
               ),
-              optional(seq(repeat($._newline), ",")),
             ),
+            optional(seq(repeat($._newline), ",")),
+            repeat($._newline),
           ),
-          repeat($._newline),
-          ")",
         ),
+        ")",
       ),
     tuple_expression: ($) =>
       seq(
@@ -264,7 +256,7 @@ module.exports = grammar({
         500,
         seq(
           field("value", $._expr),
-          repeat($._newline),
+          //repeat($._newline),
           ".",
           field("field", choice($.identifier, $.int_literal)),
         ),
@@ -354,7 +346,7 @@ function delimited($, delim, value) {
           ),
         ),
         repeat($._newline),
-        optional(delim),
+        optional(seq(delim, repeat($._newline))),
       ),
     ),
   );
