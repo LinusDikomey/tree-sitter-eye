@@ -107,6 +107,7 @@ module.exports = grammar({
         $.tuple_expression,
         $.return_expression,
         $.unit_expression,
+        $.call_expression,
         $.unary_expression,
         $.binary_expression,
         $.member_access,
@@ -203,7 +204,14 @@ module.exports = grammar({
     cast: ($) =>
       seq($._expr, repeat($._newline), "as", repeat($._newline), $._type),
     member_access: ($) =>
-      prec.left(500, seq($._expr, /*repeat($._newline),*/ ".", $.identifier)),
+      prec.left(
+        500,
+        seq(
+          field("value", $._expr),
+          /*repeat($._newline),*/ ".",
+          field("field", $.identifier),
+        ),
+      ),
     unary_expression: ($) => {
       const ops = ["-", "!", "&"];
       return prec(200, choice(seq(choice(...ops), $._expr)));
