@@ -4,11 +4,24 @@ module.exports = grammar({
   extras: ($) => [$.comment, " ", "\t", "\r"],
   rules: {
     source_file: ($) =>
-      seq(repeat(seq(repeat($._newline), $.definition)), repeat($._newline)),
+      seq(repeat(seq(repeat($._newline), $._item)), repeat($._newline)),
+    _item: ($) => choice($.definition, $.use),
     comment: (_) => token(seq("#", /.*/)),
     _newline: ($) => "\n",
     identifier: ($) => /[_a-zA-Z][_a-zA-Z0-9]*/,
-    path: ($) => $.identifier, // TODO
+    path: ($) =>
+      prec.left(
+        choice(
+          "root",
+          seq(
+            optional(seq("root", repeat($._newline), ".", repeat($._newline))),
+            seq(
+              repeat(seq($.identifier, repeat($._newline), ".")),
+              $.identifier,
+            ),
+          ),
+        ),
+      ),
     _type: ($) =>
       choice(
         $.primitive,
@@ -73,6 +86,7 @@ module.exports = grammar({
         //repeat($._newline),
         ")",
       ),
+    use: ($) => seq("use", repeat($._newline), $.path),
     definition: ($) =>
       seq(
         field("name", $.identifier),
@@ -95,31 +109,41 @@ module.exports = grammar({
       ),
     trait_bound: ($) => seq($.path, optional($.generics_instance)),
     generics_instance: ($) => seq("[", delimited($, ",", $._type), "]"),
+    _statement: ($) => choice($.decl, $._expr),
     _expr: ($) =>
       choice(
+        "root",
+        $.parenthesized_expression,
+        $.ignore,
         $.bool_literal,
-        seq("(", repeat($._newline), $._expr, repeat($._newline), ")"),
         $.identifier,
+        $.primitive,
         $.block,
-        $.decl,
         $.function_item,
         $.struct_item,
         $.enum_item,
         $.trait_item,
         $.int_literal,
+        $.float_literal,
+        $.string_literal,
         $.tuple_expression,
         $.return_expression,
-        $.unit_expression,
         $.call_expression,
+        $.member_access,
         $.unary_expression,
         $.binary_expression,
-        $.member_access,
+        $.while_expression,
+        $.if_expression,
+        $.match_expression,
       ),
+    parenthesized_expression: ($) =>
+      seq("(", repeat($._newline), $._expr, repeat($._newline), ")"),
+    ignore: (_) => "_",
     bool_literal: (_) => choice("true", "false"),
     block: ($) =>
       seq(
         "{",
-        repeat(seq(repeat($._newline), $._expr)),
+        repeat(seq(repeat($._newline), $._statement)),
         repeat($._newline),
         "}",
       ),
@@ -158,38 +182,56 @@ module.exports = grammar({
         "fn",
         optional($.parameters),
         optional(seq("->", field("return_type", $._type))),
-        choice($.block, seq(":", $._expr)),
+        choice($._block_or_colon_expr, "extern"),
       ),
+    _block_or_colon_expr: ($) =>
+      choice($.block, seq(":", repeat($._newline), $._expr)),
     parameters: ($) => seq("(", delimited($, ",", $.parameter), ")"),
     parameter: ($) => seq($.identifier, $._type),
     int_literal: (_) => /[0-9]+/,
+    float_literal: (_) => token(/[0-9]*\.[0-9]+/),
+    string_literal: (_) => token(/\"(\\.|[^"\\])*\"/),
     decl: ($) =>
-      seq($.identifier, choice(":=", seq(":", $._type, "=")), $._expr),
-    unit_expression: (_) => "()",
-    return_expression: ($) => prec.right(5, seq("ret", optional($._expr))),
-    call_expression: ($) => prec(300,
-      seq(
-        $._expr,
-        "(",
-        repeat($._newline),
-        optional(
-          seq(
-            $._expr,
-            repeat(
-              seq(
-                choice(
-                  seq(repeat($._newline), ",", repeat($._newline)),
-                  repeat1($._newline),
-                ),
-                $._expr,
-              ),
-            ),
-            //optional(seq(repeat($._newline), ",")),
-            //repeat($._newline),
-          ),
+      choice(
+        $._decl_untyped,
+        seq(
+          $.identifier,
+          ":",
+          $._type,
+          repeat($._newline),
+          "=",
+          repeat($._newline),
+          $._expr,
         ),
-        ")",
-      )),
+      ),
+    _decl_untyped: ($) => seq($.identifier, ":=", repeat($._newline), $._expr),
+    return_expression: ($) => prec.right(5, seq("ret", optional($._expr))),
+    call_expression: ($) =>
+      prec(
+        300,
+        seq(
+          $._expr,
+          "(",
+          repeat($._newline),
+          optional(
+            seq(
+              $._expr,
+              repeat(
+                seq(
+                  choice(
+                    seq(repeat($._newline), ",", repeat($._newline)),
+                    repeat1($._newline),
+                  ),
+                  $._expr,
+                ),
+              ),
+              //optional(seq(repeat($._newline), ",")),
+              //repeat($._newline),
+            ),
+          ),
+          ")",
+        ),
+      ),
     tuple_expression: ($) =>
       seq(
         "(",
@@ -263,28 +305,41 @@ module.exports = grammar({
         ),
       );
     },
-    keyword: (_) => choice(
-      "fn",
-      "ret",
-      "true",
-      "false",
-      "and",
-      "or",
-      "as",
-      "struct",
-      "enum",
-      "trait",
-      "impl",
-      "if",
-      "else",
-      "match",
-      "while",
-      "for",
-      "extern",
-      "root",
-      "use",
-      "asm",
-    ),
+    _cond: ($) => choice($._expr, $._decl_untyped),
+    while_expression: ($) =>
+      seq(
+        "while",
+        repeat($._newline),
+        field("condition", $._cond),
+        repeat($._newline),
+        field("body", $._block_or_colon_expr),
+      ),
+    if_expression: ($) =>
+      prec.left(
+        0,
+        seq(
+          "if",
+          repeat($._newline),
+          field("condition", $._cond),
+          repeat($._newline),
+          field("then", $._block_or_colon_expr),
+          optional(
+            seq(repeat($._newline), seq("else", field("else", $._expr))),
+          ),
+        ),
+      ),
+    match_expression: ($) =>
+      seq(
+        "match",
+        repeat($._newline),
+        field("value", $._expr),
+        repeat($._newline),
+        "{",
+        delimited($, ",", $.match_arm),
+        "}",
+      ),
+    match_arm: ($) =>
+      seq(field("pattern", $._expr), field("value", $._block_or_colon_expr)),
   },
 });
 
