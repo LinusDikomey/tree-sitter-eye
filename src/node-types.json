@@ -1702,6 +1702,10 @@
           {
             "type": "identifier",
             "named": true
+          },
+          {
+            "type": "int_literal",
+            "named": true
           }
         ]
       },

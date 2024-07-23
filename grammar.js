@@ -140,13 +140,7 @@ module.exports = grammar({
       seq("(", repeat($._newline), $._expr, repeat($._newline), ")"),
     ignore: (_) => "_",
     bool_literal: (_) => choice("true", "false"),
-    block: ($) =>
-      seq(
-        "{",
-        repeat(seq(repeat($._newline), $._statement)),
-        repeat($._newline),
-        "}",
-      ),
+    block: ($) => seq("{", delimited($, ",", $._statement), "}"),
     struct_item: ($) =>
       seq(
         "struct",
@@ -212,9 +206,9 @@ module.exports = grammar({
         seq(
           $._expr,
           "(",
-          repeat($._newline),
           optional(
             seq(
+              repeat($._newline),
               $._expr,
               repeat(
                 seq(
@@ -225,10 +219,10 @@ module.exports = grammar({
                   $._expr,
                 ),
               ),
-              //optional(seq(repeat($._newline), ",")),
-              //repeat($._newline),
+              optional(seq(repeat($._newline), ",")),
             ),
           ),
+          repeat($._newline),
           ")",
         ),
       ),
@@ -246,7 +240,6 @@ module.exports = grammar({
           ),
           seq(repeat1($._newline), $._tuple_rest),
         ),
-        //repeat($._newline),
         ")",
       ),
     _tuple_rest: ($) =>
@@ -262,6 +255,7 @@ module.exports = grammar({
           ),
         ),
         optional(seq(repeat($._newline), ",")),
+        repeat($._newline),
       ),
     cast: ($) =>
       seq($._expr, repeat($._newline), "as", repeat($._newline), $._type),
@@ -270,8 +264,9 @@ module.exports = grammar({
         500,
         seq(
           field("value", $._expr),
-          /*repeat($._newline),*/ ".",
-          field("field", $.identifier),
+          repeat($._newline),
+          ".",
+          field("field", choice($.identifier, $.int_literal)),
         ),
       ),
     unary_expression: ($) => {
