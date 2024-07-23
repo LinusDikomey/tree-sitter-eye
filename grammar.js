@@ -129,6 +129,7 @@ module.exports = grammar({
         $.root,
         $.ignore,
         $.bool_literal,
+        $.cast,
         $.identifier,
         $.primitive,
         $.block,
@@ -279,7 +280,15 @@ module.exports = grammar({
         repeat($._newline),
       ),
     cast: ($) =>
-      seq($._expr, repeat($._newline), "as", repeat($._newline), $._type),
+      prec(
+        100,
+        seq(
+          field("value", $._expr),
+          "as",
+          repeat($._newline),
+          field("type", $._type),
+        ),
+      ),
     member_access: ($) =>
       prec.left(
         500,

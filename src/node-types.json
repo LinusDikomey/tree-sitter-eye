@@ -24,6 +24,10 @@
           "named": true
         },
         {
+          "type": "cast",
+          "named": true
+        },
+        {
           "type": "enum_item",
           "named": true
         },
@@ -132,6 +136,10 @@
         },
         {
           "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "cast",
           "named": true
         },
         {
@@ -255,6 +263,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cast",
             "named": true
           },
           {
@@ -430,6 +442,10 @@
             "named": true
           },
           {
+            "type": "cast",
+            "named": true
+          },
+          {
             "type": "enum_item",
             "named": true
           },
@@ -535,6 +551,10 @@
         },
         {
           "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "cast",
           "named": true
         },
         {
@@ -662,6 +682,10 @@
             "named": true
           },
           {
+            "type": "cast",
+            "named": true
+          },
+          {
             "type": "enum_item",
             "named": true
           },
@@ -756,6 +780,148 @@
     }
   },
   {
+    "type": "cast",
+    "named": true,
+    "fields": {
+      "type": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "generics_instance",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "tuple_type",
+            "named": true
+          },
+          {
+            "type": "type_path",
+            "named": true
+          }
+        ]
+      },
+      "value": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "binary_expression",
+            "named": true
+          },
+          {
+            "type": "block",
+            "named": true
+          },
+          {
+            "type": "bool_literal",
+            "named": true
+          },
+          {
+            "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cast",
+            "named": true
+          },
+          {
+            "type": "enum_item",
+            "named": true
+          },
+          {
+            "type": "enum_variant",
+            "named": true
+          },
+          {
+            "type": "float_literal",
+            "named": true
+          },
+          {
+            "type": "function_item",
+            "named": true
+          },
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "if_expression",
+            "named": true
+          },
+          {
+            "type": "ignore",
+            "named": true
+          },
+          {
+            "type": "int_literal",
+            "named": true
+          },
+          {
+            "type": "match_expression",
+            "named": true
+          },
+          {
+            "type": "member_access",
+            "named": true
+          },
+          {
+            "type": "parenthesized_expression",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "return_expression",
+            "named": true
+          },
+          {
+            "type": "root",
+            "named": true
+          },
+          {
+            "type": "string_literal",
+            "named": true
+          },
+          {
+            "type": "struct_item",
+            "named": true
+          },
+          {
+            "type": "trait_item",
+            "named": true
+          },
+          {
+            "type": "tuple_expression",
+            "named": true
+          },
+          {
+            "type": "unary_expression",
+            "named": true
+          },
+          {
+            "type": "while_expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "decl",
     "named": true,
     "fields": {
@@ -777,6 +943,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cast",
             "named": true
           },
           {
@@ -909,6 +1079,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cast",
             "named": true
           },
           {
@@ -1057,6 +1231,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cast",
             "named": true
           },
           {
@@ -1255,6 +1433,10 @@
           "named": true
         },
         {
+          "type": "cast",
+          "named": true
+        },
+        {
           "type": "enum_item",
           "named": true
         },
@@ -1424,6 +1606,10 @@
             "named": true
           },
           {
+            "type": "cast",
+            "named": true
+          },
+          {
             "type": "enum_item",
             "named": true
           },
@@ -1526,6 +1712,10 @@
             "named": true
           },
           {
+            "type": "cast",
+            "named": true
+          },
+          {
             "type": "enum_item",
             "named": true
           },
@@ -1625,6 +1815,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cast",
             "named": true
           },
           {
@@ -1734,6 +1928,10 @@
             "named": true
           },
           {
+            "type": "cast",
+            "named": true
+          },
+          {
             "type": "enum_item",
             "named": true
           },
@@ -1833,6 +2031,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cast",
             "named": true
           },
           {
@@ -1944,6 +2146,10 @@
             "named": true
           },
           {
+            "type": "cast",
+            "named": true
+          },
+          {
             "type": "enum_item",
             "named": true
           },
@@ -2047,6 +2253,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cast",
             "named": true
           },
           {
@@ -2155,6 +2365,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cast",
             "named": true
           },
           {
@@ -2287,6 +2501,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cast",
             "named": true
           },
           {
@@ -2459,6 +2677,10 @@
           "named": true
         },
         {
+          "type": "cast",
+          "named": true
+        },
+        {
           "type": "enum_item",
           "named": true
         },
@@ -2622,6 +2844,10 @@
         },
         {
           "type": "call_expression",
+          "named": true
+        },
+        {
+          "type": "cast",
           "named": true
         },
         {
@@ -2852,6 +3078,10 @@
           "named": true
         },
         {
+          "type": "cast",
+          "named": true
+        },
+        {
           "type": "enum_item",
           "named": true
         },
@@ -3028,6 +3258,10 @@
           "named": true
         },
         {
+          "type": "cast",
+          "named": true
+        },
+        {
           "type": "enum_item",
           "named": true
         },
@@ -3154,6 +3388,10 @@
             "named": true
           },
           {
+            "type": "cast",
+            "named": true
+          },
+          {
             "type": "enum_item",
             "named": true
           },
@@ -3260,6 +3498,10 @@
             "named": true
           },
           {
+            "type": "cast",
+            "named": true
+          },
+          {
             "type": "enum_item",
             "named": true
           },
@@ -3362,6 +3604,10 @@
             "named": true
           },
           {
+            "type": "cast",
+            "named": true
+          },
+          {
             "type": "enum_item",
             "named": true
           },
@@ -3461,6 +3707,10 @@
           },
           {
             "type": "call_expression",
+            "named": true
+          },
+          {
+            "type": "cast",
             "named": true
           },
           {
