@@ -1,0 +1,13 @@
+==================
+Simple Integer constant
+==================
+
+MY_CONSTANT :: 123
+
+---
+(source_file
+    (definition
+        (identifier)
+        (int_literal)
+    )
+)

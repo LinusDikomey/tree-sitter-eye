@@ -1,0 +1,47 @@
+==================
+Different type annotations
+==================
+
+A :: 123
+B : type : struct {}
+C : *i32 : 12
+D : *
+    *i32 : 123
+E : [i32; 5] : 1234
+F : [[i32; 2]; 7] : 1
+
+---
+(source_file
+    (definition
+        (identifier)
+        (int_literal)
+    )
+    (definition
+        (identifier)
+        (primitive)
+        (struct_item)
+    )
+    (definition
+        (identifier)
+        (pointer_type (primitive))
+        (int_literal)
+    )
+    (definition
+        (identifier)
+        (pointer_type (pointer_type (primitive)))
+        (int_literal)
+    )
+    (definition
+        (identifier)
+        (array_type (primitive) (int_literal))
+        (int_literal)
+    )
+    (definition
+        (identifier)
+        (array_type
+            (array_type (primitive) (int_literal))
+            (int_literal)
+        )
+        (int_literal)
+    )
+)

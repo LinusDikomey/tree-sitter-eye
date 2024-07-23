@@ -1,0 +1,22 @@
+==================
+Tuple expressions
+==================
+
+A :: (1, 2)
+B: (i32, *[f64; 2]) : (
+    1
+    x) # closing paren on new line doesn't work for now
+
+---
+(source_file
+    (definition (identifier) (tuple_expression (int_literal) (int_literal)))
+    (definition
+        (identifier)
+        (tuple_type
+            (primitive)
+            (pointer_type (array_type (primitive) (int_literal)))
+        )
+        (tuple_expression (int_literal) (identifier))
+    )
+    (comment)
+)

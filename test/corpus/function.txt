@@ -1,0 +1,90 @@
+==================
+Function definitions
+==================
+f :: fn {
+    x := 5
+    ret ()
+    ret
+    ret ret ()
+    ret 5 + 5
+}
+
+g :: fn -> i32 {
+    ret 2 + 4 * 2
+}
+
+h :: fn -> i32: 1
+
+i :: fn(x i32, y i32) {
+    ret x * y
+}
+
+j :: fn(
+    x i32
+    y i32
+) -> i32: x + y
+
+---
+(source_file
+  (definition
+    name: (identifier)
+    value: (function_item
+      (block
+        (decl
+          (identifier)
+          (int_literal))
+        (return_expression
+          (unit_expression))
+        (return_expression)
+        (return_expression
+          (return_expression
+            (unit_expression)))
+        (return_expression
+          (binary_expression
+            left: (int_literal)
+            right: (int_literal))))))
+  (definition
+    name: (identifier)
+    value: (function_item
+      return_type: (primitive)
+      (block
+        (return_expression
+          (binary_expression
+            left: (int_literal)
+            right: (binary_expression
+              left: (int_literal)
+              right: (int_literal)))))))
+  (definition
+    name: (identifier)
+    value: (function_item
+      return_type: (primitive)
+      (int_literal)))
+  (definition
+    name: (identifier)
+    value: (function_item
+      (parameters
+        (parameter
+          (identifier)
+          (primitive))
+        (parameter
+          (identifier)
+          (primitive)))
+      (block
+        (return_expression
+          (binary_expression
+            left: (identifier)
+            right: (identifier))))))
+  (definition
+    name: (identifier)
+    value: (function_item
+      (parameters
+        (parameter
+          (identifier)
+          (primitive))
+        (parameter
+          (identifier)
+          (primitive)))
+      return_type: (primitive)
+      (binary_expression
+        left: (identifier)
+        right: (identifier)))))

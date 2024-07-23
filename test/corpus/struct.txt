@@ -1,0 +1,21 @@
+==================
+Struct definition
+==================
+
+MyStruct :: struct {
+    x i32
+}
+
+---
+
+(source_file
+  (definition
+    (identifier)
+    (struct_item
+      (struct_field
+        (identifier)
+        (primitive)
+      )
+    )
+  )
+)
