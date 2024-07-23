@@ -2,6 +2,7 @@ module.exports = grammar({
   name: "eye",
 
   extras: ($) => [$.comment, " ", "\t", "\r"],
+  conflicts: ($) => [[$.definition, $._expr]],
   rules: {
     source_file: ($) =>
       seq(repeat(seq(repeat($._newline), $._item)), repeat($._newline)),
@@ -10,6 +11,7 @@ module.exports = grammar({
     _newline: ($) => "\n",
     identifier: ($) => /[_a-zA-Z][_a-zA-Z0-9]*/,
     field_identifier: ($) => $.identifier,
+    type_identifier: ($) => $.identifier,
     path: ($) =>
       prec.left(
         seq(
@@ -24,13 +26,22 @@ module.exports = grammar({
           ),
         ),
       ),
+    type_path: ($) =>
+      prec.left(
+        seq(
+          choice("root", $.identifier),
+          repeat(
+            seq(repeat($._newline), ".", repeat($._newline), $.type_identifier),
+          ),
+        ),
+      ),
     _type: ($) =>
       choice(
         $.primitive,
         $.array_type,
         $.pointer_type,
         $.tuple_type,
-        seq($.path, optional($.generics_instance)),
+        seq($.type_path, optional($.generics_instance)),
       ),
     primitive: (_) =>
       choice(
@@ -185,16 +196,29 @@ module.exports = grammar({
     _block_or_colon_expr: ($) =>
       choice($.block, seq(":", repeat($._newline), $._expr)),
     parameters: ($) => seq("(", delimited($, ",", $.parameter), ")"),
-    parameter: ($) => seq($.identifier, $._type),
+    parameter: ($) => seq(field("name", $.identifier), field("type", $._type)),
     int_literal: (_) => /[0-9]+/,
     float_literal: (_) => token(/[0-9]*\.[0-9]+/),
     string_literal: (_) => token(/\"(\\.|[^"\\])*\"/),
     decl: ($) =>
       choice(
         $._decl_untyped,
-        seq($.identifier, ":", $._type, "=", repeat($._newline), $._expr),
+        seq(
+          field("pattern", $._expr),
+          ":",
+          field("type", $._type),
+          "=",
+          repeat($._newline),
+          field("value", $._expr),
+        ),
       ),
-    _decl_untyped: ($) => seq($.identifier, ":=", repeat($._newline), $._expr),
+    _decl_untyped: ($) =>
+      seq(
+        field("pattern", $._expr),
+        ":=",
+        repeat($._newline),
+        field("value", $._expr),
+      ),
     return_expression: ($) => prec.right(5, seq("ret", optional($._expr))),
     call_expression: ($) =>
       prec(300, seq(field("called", $._expr), $.arguments)),

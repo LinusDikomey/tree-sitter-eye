@@ -31,8 +31,8 @@ j :: fn(
     value: (function_item
       (block
         (decl
-          (identifier)
-          (int_literal))
+          pattern: (identifier)
+          value: (int_literal))
         (return_expression
           (primitive))
         (return_expression)
@@ -64,11 +64,11 @@ j :: fn(
     value: (function_item
       (parameters
         (parameter
-          (identifier)
-          (primitive))
+          name: (identifier)
+          type: (primitive))
         (parameter
-          (identifier)
-          (primitive)))
+          name: (identifier)
+          type: (primitive)))
       (block
         (return_expression
           (binary_expression
@@ -79,11 +79,11 @@ j :: fn(
     value: (function_item
       (parameters
         (parameter
-          (identifier)
-          (primitive))
+          name: (identifier)
+          type: (primitive))
         (parameter
-          (identifier)
-          (primitive)))
+          name: (identifier)
+          type: (primitive)))
       return_type: (primitive)
       (binary_expression
         left: (identifier)
