@@ -9,15 +9,17 @@ module.exports = grammar({
     comment: (_) => token(seq("#", /.*/)),
     _newline: ($) => "\n",
     identifier: ($) => /[_a-zA-Z][_a-zA-Z0-9]*/,
+    field_identifier: ($) => $.identifier,
     path: ($) =>
       prec.left(
-        choice(
-          "root",
-          seq(
-            optional(seq("root", repeat($._newline), ".", repeat($._newline))),
+        seq(
+          choice("root", $.identifier),
+          repeat(
             seq(
-              repeat(seq($.identifier, repeat($._newline), ".")),
-              $.identifier,
+              repeat($._newline),
+              ".",
+              repeat($._newline),
+              $.field_identifier,
             ),
           ),
         ),
@@ -256,9 +258,10 @@ module.exports = grammar({
         500,
         seq(
           field("value", $._expr),
+          // TODO: this doesn't work for some reason
           //repeat($._newline),
           ".",
-          field("field", choice($.identifier, $.int_literal)),
+          field("field", choice($.field_identifier, $.int_literal)),
         ),
       ),
     unary_expression: ($) => {
