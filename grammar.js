@@ -28,6 +28,7 @@ module.exports = grammar({
       ),
     type_path: ($) =>
       prec.left(
+        600,
         seq(
           choice("root", $.identifier),
           repeat(
@@ -175,8 +176,7 @@ module.exports = grammar({
         optional($.generics),
         repeat($._newline),
         "{",
-        // TODO
-        //delimited($, ",", choice($.definition, $.struct_field)),
+        delimited($, ",", choice($.definition, $.enum_variant)),
         "}",
       ),
     trait_item: ($) =>
@@ -185,17 +185,24 @@ module.exports = grammar({
         optional($.generics),
         repeat($._newline),
         "{",
-        // TODO
-        //delimited($, ",", choice($.definition, $.struct_field)),
+        delimited($, ",", choice($.function_item, $.function_signature_item)),
         "}",
       ),
     struct_field: ($) => seq($.identifier, $._type),
+    variant_definition: ($) =>
+      seq(field("name", $.identifier), field("fields", optional($.tuple_type))),
     function_item: ($) =>
       seq(
         "fn",
         optional($.parameters),
         optional(seq("->", field("return_type", $._type))),
         choice($._block_or_colon_expr, "extern"),
+      ),
+    function_signature_item: ($) =>
+      seq(
+        "fn",
+        optional($.parameters),
+        optional(seq("->", field("return_type", $._type))),
       ),
     _block_or_colon_expr: ($) =>
       choice($.block, seq(":", repeat($._newline), $._expr)),
@@ -286,6 +293,7 @@ module.exports = grammar({
           field("value", $._expr),
           "as",
           repeat($._newline),
+          // TODO: associates wrongly when the type is a path, gets parsed as a member_access instead
           field("type", $._type),
         ),
       ),

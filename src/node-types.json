@@ -1326,9 +1326,17 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "definition",
+          "named": true
+        },
+        {
+          "type": "enum_variant",
+          "named": true
+        },
         {
           "type": "generics",
           "named": true
@@ -1518,6 +1526,52 @@
         },
         {
           "type": "while_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "function_signature_item",
+    "named": true,
+    "fields": {
+      "return_type": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "array_type",
+            "named": true
+          },
+          {
+            "type": "generics_instance",
+            "named": true
+          },
+          {
+            "type": "pointer_type",
+            "named": true
+          },
+          {
+            "type": "primitive",
+            "named": true
+          },
+          {
+            "type": "tuple_type",
+            "named": true
+          },
+          {
+            "type": "type_path",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "parameters",
           "named": true
         }
       ]
@@ -3043,9 +3097,17 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "function_item",
+          "named": true
+        },
+        {
+          "type": "function_signature_item",
+          "named": true
+        },
         {
           "type": "generics",
           "named": true
