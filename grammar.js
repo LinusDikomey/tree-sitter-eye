@@ -97,12 +97,15 @@ module.exports = grammar({
     generics_instance: ($) => seq("[", delimited($, ",", $._type), "]"),
     _expr: ($) =>
       choice(
+        $.bool_literal,
         seq("(", repeat($._newline), $._expr, repeat($._newline), ")"),
         $.identifier,
         $.block,
         $.decl,
-        $.struct_item,
         $.function_item,
+        $.struct_item,
+        $.enum_item,
+        $.trait_item,
         $.int_literal,
         $.tuple_expression,
         $.return_expression,
@@ -112,6 +115,7 @@ module.exports = grammar({
         $.binary_expression,
         $.member_access,
       ),
+    bool_literal: (_) => choice("true", "false"),
     block: ($) =>
       seq(
         "{",
@@ -126,6 +130,26 @@ module.exports = grammar({
         repeat($._newline),
         "{",
         delimited($, ",", choice($.definition, $.struct_field)),
+        "}",
+      ),
+    enum_item: ($) =>
+      seq(
+        "enum",
+        optional($.generics),
+        repeat($._newline),
+        "{",
+        // TODO
+        //delimited($, ",", choice($.definition, $.struct_field)),
+        "}",
+      ),
+    trait_item: ($) =>
+      seq(
+        "trait",
+        optional($.generics),
+        repeat($._newline),
+        "{",
+        // TODO
+        //delimited($, ",", choice($.definition, $.struct_field)),
         "}",
       ),
     struct_field: ($) => seq($.identifier, $._type),
@@ -143,7 +167,7 @@ module.exports = grammar({
       seq($.identifier, choice(":=", seq(":", $._type, "=")), $._expr),
     unit_expression: (_) => "()",
     return_expression: ($) => prec.right(5, seq("ret", optional($._expr))),
-    call_expression: ($) =>
+    call_expression: ($) => prec(300,
       seq(
         $._expr,
         "(",
@@ -154,22 +178,18 @@ module.exports = grammar({
             repeat(
               seq(
                 choice(
-                  seq(
-                    seq(repeat($._newline), ",", repeat($._newline)),
-                    repeat1($._newline),
-                  ),
+                  seq(repeat($._newline), ",", repeat($._newline)),
+                  repeat1($._newline),
                 ),
                 $._expr,
               ),
             ),
-            optional(seq($._newline, ",")),
-            repeat($._newline),
+            //optional(seq(repeat($._newline), ",")),
+            //repeat($._newline),
           ),
         ),
-        repeat($._newline),
-        optional(seq(",", repeat($._newline))),
         ")",
-      ),
+      )),
     tuple_expression: ($) =>
       seq(
         "(",
@@ -243,6 +263,28 @@ module.exports = grammar({
         ),
       );
     },
+    keyword: (_) => choice(
+      "fn",
+      "ret",
+      "true",
+      "false",
+      "and",
+      "or",
+      "as",
+      "struct",
+      "enum",
+      "trait",
+      "impl",
+      "if",
+      "else",
+      "match",
+      "while",
+      "for",
+      "extern",
+      "root",
+      "use",
+      "asm",
+    ),
   },
 });
 
