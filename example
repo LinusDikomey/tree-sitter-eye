@@ -1,0 +1,6 @@
+
+T :: trait {
+} for {
+    impl _[] for i32 {
+    }
+}

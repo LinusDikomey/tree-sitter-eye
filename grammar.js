@@ -108,18 +108,11 @@ module.exports = grammar({
         repeat($._newline),
         field("value", $._expr),
       ),
-    generics: ($) =>
+    generics: ($) => seq("[", delimited($, ",", $._generic), "]"),
+    _generic: ($) =>
       seq(
-        "[",
-        delimited(
-          $,
-          ",",
-          seq(
-            $.path,
-            optional(seq(":", $.trait_bound, repeat(seq("+", $.trait_bound)))),
-          ),
-        ),
-        "]",
+        $.path,
+        optional(seq(":", $.trait_bound, repeat(seq("+", $.trait_bound)))),
       ),
     trait_bound: ($) => seq($.path, optional($.generics_instance)),
     generics_instance: ($) => seq("[", delimited($, ",", $._type), "]"),
@@ -185,21 +178,71 @@ module.exports = grammar({
         optional($.generics),
         repeat($._newline),
         "{",
-        delimited($, ",", choice($.function_item, $.function_signature_item)),
+        delimited(
+          $,
+          ",",
+          seq(
+            $.identifier,
+            repeat($._newline),
+            "::",
+            repeat($._newline),
+            choice($.function_signature_item),
+          ),
+        ),
+        "}",
+        optional(
+          seq(
+            "for",
+            repeat($._newline),
+            "{",
+            //delimited($, ",", $.attached_trait_impl),
+            "}",
+          ),
+        ),
+      ),
+    /*attached_trait_impl: ($) =>
+      seq(
+        "impl",
+        repeat($._newline),
+        optional(field("impl_generics", $.generics)),
+        repeat($._newline),
+        "_",
+        field("trait_generics", optional($.generics_instance)),
+        repeat($._newline),
+        "for",
+        repeat($._newline),
+        field("type", $._type),
+        "{",
+        delimited($, ",", $.definition),
         "}",
       ),
+      */
+    /*impl_function: ($) =>
+      seq(
+        field("name", $.identifier),
+        repeat($._newline),
+        "::",
+        repeat($._newline),
+        $.function_item,
+      ),
+      */
     struct_field: ($) => seq($.identifier, $._type),
     variant_definition: ($) =>
       seq(field("name", $.identifier), field("fields", optional($.tuple_type))),
     function_item: ($) =>
       seq(
         "fn",
+        optional($.generics),
         optional($.parameters),
         optional(seq("->", field("return_type", $._type))),
         choice($._block_or_colon_expr, "extern"),
       ),
     function_signature_item: ($) =>
       seq(
+        field("name", $.identifier),
+        repeat($._newline),
+        "::",
+        repeat($._newline),
         "fn",
         optional($.parameters),
         optional(seq("->", field("return_type", $._type))),

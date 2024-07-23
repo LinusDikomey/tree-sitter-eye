@@ -1461,6 +1461,10 @@
           "named": true
         },
         {
+          "type": "generics",
+          "named": true
+        },
+        {
           "type": "identifier",
           "named": true
         },
@@ -1535,6 +1539,16 @@
     "type": "function_signature_item",
     "named": true,
     "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
       "return_type": {
         "multiple": true,
         "required": false,
@@ -3101,15 +3115,15 @@
       "required": false,
       "types": [
         {
-          "type": "function_item",
-          "named": true
-        },
-        {
           "type": "function_signature_item",
           "named": true
         },
         {
           "type": "generics",
+          "named": true
+        },
+        {
+          "type": "identifier",
           "named": true
         }
       ]
@@ -4013,6 +4027,10 @@
   },
   {
     "type": "fn",
+    "named": false
+  },
+  {
+    "type": "for",
     "named": false
   },
   {
