@@ -957,6 +957,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "enum_variant"
+        },
+        {
+          "type": "SYMBOL",
           "name": "function_item"
         },
         {
@@ -1208,6 +1212,35 @@
         {
           "type": "STRING",
           "value": "}"
+        }
+      ]
+    },
+    "enum_variant": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "FIELD",
+          "name": "variant",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "arguments"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },
@@ -2869,6 +2902,9 @@
     [
       "definition",
       "_expr"
+    ],
+    [
+      "enum_variant"
     ]
   ],
   "precedences": [],

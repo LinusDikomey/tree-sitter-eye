@@ -2,7 +2,7 @@ module.exports = grammar({
   name: "eye",
 
   extras: ($) => [$.comment, " ", "\t", "\r"],
-  conflicts: ($) => [[$.definition, $._expr]],
+  conflicts: ($) => [[$.definition, $._expr], [$.enum_variant]],
   rules: {
     source_file: ($) =>
       seq(repeat(seq(repeat($._newline), $._item)), repeat($._newline)),
@@ -132,6 +132,7 @@ module.exports = grammar({
         $.identifier,
         $.primitive,
         $.block,
+        $.enum_variant,
         $.function_item,
         $.struct_item,
         $.enum_item,
@@ -156,6 +157,8 @@ module.exports = grammar({
     bool_literal: (_) => choice("true", "false"),
     block: ($) =>
       seq("{", delimited($, ",", choice($._statement, $._item)), "}"),
+    enum_variant: ($) =>
+      seq(".", field("variant", $.identifier), optional($.arguments)),
     struct_item: ($) =>
       seq(
         "struct",

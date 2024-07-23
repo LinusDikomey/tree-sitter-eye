@@ -28,6 +28,10 @@
           "named": true
         },
         {
+          "type": "enum_variant",
+          "named": true
+        },
+        {
           "type": "float_literal",
           "named": true
         },
@@ -132,6 +136,10 @@
         },
         {
           "type": "enum_item",
+          "named": true
+        },
+        {
+          "type": "enum_variant",
           "named": true
         },
         {
@@ -251,6 +259,10 @@
           },
           {
             "type": "enum_item",
+            "named": true
+          },
+          {
+            "type": "enum_variant",
             "named": true
           },
           {
@@ -422,6 +434,10 @@
             "named": true
           },
           {
+            "type": "enum_variant",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -531,6 +547,10 @@
         },
         {
           "type": "enum_item",
+          "named": true
+        },
+        {
+          "type": "enum_variant",
           "named": true
         },
         {
@@ -646,6 +666,10 @@
             "named": true
           },
           {
+            "type": "enum_variant",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -757,6 +781,10 @@
           },
           {
             "type": "enum_item",
+            "named": true
+          },
+          {
+            "type": "enum_variant",
             "named": true
           },
           {
@@ -885,6 +913,10 @@
           },
           {
             "type": "enum_item",
+            "named": true
+          },
+          {
+            "type": "enum_variant",
             "named": true
           },
           {
@@ -1032,6 +1064,10 @@
             "named": true
           },
           {
+            "type": "enum_variant",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -1123,6 +1159,32 @@
     }
   },
   {
+    "type": "enum_variant",
+    "named": true,
+    "fields": {
+      "variant": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "arguments",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "field_identifier",
     "named": true,
     "fields": {},
@@ -1194,6 +1256,10 @@
         },
         {
           "type": "enum_item",
+          "named": true
+        },
+        {
+          "type": "enum_variant",
           "named": true
         },
         {
@@ -1362,6 +1428,10 @@
             "named": true
           },
           {
+            "type": "enum_variant",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -1460,6 +1530,10 @@
             "named": true
           },
           {
+            "type": "enum_variant",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -1555,6 +1629,10 @@
           },
           {
             "type": "enum_item",
+            "named": true
+          },
+          {
+            "type": "enum_variant",
             "named": true
           },
           {
@@ -1660,6 +1738,10 @@
             "named": true
           },
           {
+            "type": "enum_variant",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -1755,6 +1837,10 @@
           },
           {
             "type": "enum_item",
+            "named": true
+          },
+          {
+            "type": "enum_variant",
             "named": true
           },
           {
@@ -1862,6 +1948,10 @@
             "named": true
           },
           {
+            "type": "enum_variant",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -1961,6 +2051,10 @@
           },
           {
             "type": "enum_item",
+            "named": true
+          },
+          {
+            "type": "enum_variant",
             "named": true
           },
           {
@@ -2065,6 +2159,10 @@
           },
           {
             "type": "enum_item",
+            "named": true
+          },
+          {
+            "type": "enum_variant",
             "named": true
           },
           {
@@ -2193,6 +2291,10 @@
           },
           {
             "type": "enum_item",
+            "named": true
+          },
+          {
+            "type": "enum_variant",
             "named": true
           },
           {
@@ -2361,6 +2463,10 @@
           "named": true
         },
         {
+          "type": "enum_variant",
+          "named": true
+        },
+        {
           "type": "float_literal",
           "named": true
         },
@@ -2520,6 +2626,10 @@
         },
         {
           "type": "enum_item",
+          "named": true
+        },
+        {
+          "type": "enum_variant",
           "named": true
         },
         {
@@ -2746,6 +2856,10 @@
           "named": true
         },
         {
+          "type": "enum_variant",
+          "named": true
+        },
+        {
           "type": "float_literal",
           "named": true
         },
@@ -2918,6 +3032,10 @@
           "named": true
         },
         {
+          "type": "enum_variant",
+          "named": true
+        },
+        {
           "type": "float_literal",
           "named": true
         },
@@ -3040,6 +3158,10 @@
             "named": true
           },
           {
+            "type": "enum_variant",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -3142,6 +3264,10 @@
             "named": true
           },
           {
+            "type": "enum_variant",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -3240,6 +3366,10 @@
             "named": true
           },
           {
+            "type": "enum_variant",
+            "named": true
+          },
+          {
             "type": "float_literal",
             "named": true
           },
@@ -3335,6 +3465,10 @@
           },
           {
             "type": "enum_item",
+            "named": true
+          },
+          {
+            "type": "enum_variant",
             "named": true
           },
           {
